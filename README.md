@@ -1,37 +1,23 @@
-Ghostdreamer v0.1.0 BETA - Standalone Embedding & Build Architecture
+# Ghostdreamer (v0.1.0-beta)
 
-1. Is there a separate index.html file required?
+A self-contained, high-performance Go application utilizing Go's `go:embed` package to bundle the frontend `index.html` interface directly into the executable binary.
 
-No. Ghostdreamer operates on a strict Single-File Mandate for source organization during distribution, while remaining modular for local development:
+## Architecture Overview
 
-Embedded Production Mode: Inside main.go, the frontend interface is stored as a raw multiline string constant (htmlTemplate) and parsed via template.Must(template.New("index").Parse(htmlTemplate)). When you compile with go build, Go's //go:embed or string compilation embeds the entire HTML, CSS, and PWA canvas directly into the binary.
+Ghostdreamer combines a lightweight HTTP server and real-time canvas stream router into a single static binary. 
 
-Zero Loose Files: End-users downloading your binary (ghostdreamerv1b.exe or ghostdreamerv1b-linux) do not need to carry a separate index.html file alongside it. The executable is entirely self-contained.
+* **`main.go`**: Core server, HTTP routing, API endpoints, and static file serving via `//go:embed index.html`.
+* **`index.html`**: Embedded frontend dashboard featuring real-time telemetry, canvas rendering loops, and configuration state synchronization.
 
-2. GitHub Repository Build Specs & Optional Flags
+---
 
-When publishing or compiling your Go binary from your repository source, you can use these optional build flags depending on your target environment:
+## Getting Started
 
-Standard Build (Default with Terminal Output)
+### Option 1: Download Pre-Built Releases (Recommended)
+Grab the latest stable binary for your platform directly from the [GitHub Releases](../../releases) page:
+* **Windows (GUI/Target):** `ghostdreamerv1b.exe`
+* **Linux:** `ghostdreamerv1b-linux`
 
-go build -o ghostdreamerv1b main.go
-
-
-Production Release Build (Windows GUI Mode + Stripped Symbols)
-
-Suppresses the background console command prompt window on Windows and strips debugging symbols to minimize file size:
-
-# For Windows
-go build -ldflags="-H windowsgui -s -w" -o ghostdreamerv1b.exe main.go
-
-# For Linux Server / Edge Nodes
-go build -ldflags="-s -w" -o ghostdreamerv1b main.go
-
-
-3. Local Runtime & PWA Verification
-
-Run your compiled binary or execute go run main.go.
-
-Open Microsoft Edge or Google Chrome and navigate to http://127.0.0.1:8080.
-
-Click the browser menu (three dots) and select "Install Ghostdreamer as an app" to run your streaming portal in its own dedicated PWA window container.
+Run the binary directly in your environment:
+```powershell
+./ghostdreamerv1b.exe
